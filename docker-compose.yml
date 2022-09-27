@@ -2,10 +2,10 @@ version: "3.9"
 
 services:
   wordpress:
-    image: vangoda/web-base-dev:1.0
-    container_name: webbase.local
+    image: vangoda/Vuejs-practice:1.0
+    container_name: vuejs.practice
     environment:
-      - VIRTUAL_HOST=webbase.local
+      - VIRTUAL_HOST=vuejs.practice
     networks:
       - nginx-proxy
     volumes:
@@ -18,7 +18,7 @@ services:
       - ./config-custom/php.ini:/usr/local/etc/php/conf.d/php.ini
 
   db:
-    image: mysql:5.7
+    image: mysql
     volumes:
       - db:/var/lib/mysql
       - ./config-custom/mysql.cnf:/etc/mysql/conf.d/mysql/mysql-server
