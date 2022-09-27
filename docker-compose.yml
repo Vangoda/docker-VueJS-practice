@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  wordpress:
+    image: vangoda/web-base-dev:1.0
+    container_name: webbase.local
+    environment:
+      - VIRTUAL_HOST=webbase.local
+    networks:
+      - nginx-proxy
+    volumes:
+      - webbase:/var/www/html
+      - ./shared:/var/www/html/shared
+      # Keep vscode remote server in volume to avoid reinstalling
+      - vscode:/home/www-data/
+      - ./config-custom/nginx.conf:/etc/nginx/nginx.conf
+      - ./config-custom/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./config-custom/php.ini:/usr/local/etc/php/conf.d/php.ini
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - db:/var/lib/mysql
+      - ./config-custom/mysql.cnf:/etc/mysql/conf.d/mysql/mysql-server
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+    networks:
+      - nginx-proxy
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - "8080:80"
+    networks:
+      - nginx-proxy
+    environment:
+      - PMA_ABSOLUTE_URI=pma.localhost
+      - VIRTUAL_HOST=pma.localhost
+      - UPLOAD_LIMIT=100M
+      - HIDE_PHP_VERSION=true
+
+volumes:
+  webbase:
+  vscode:
+  db:
+
+networks:
+  nginx-proxy:
+    external: true
