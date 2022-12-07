@@ -2,14 +2,14 @@ version: "3.9"
 
 services:
   wordpress:
-    image: vangoda/Vuejs-practice:1.0
-    container_name: vuejs.practice
+    image: vangoda/web-base-dev:1.1
+    container_name: course.vuejs
     environment:
-      - VIRTUAL_HOST=vuejs.practice
+      - VIRTUAL_HOST=course.vuejs
     networks:
       - nginx-proxy
     volumes:
-      - webbase:/var/www/html
+      - course.vuejs:/var/www/html
       - ./shared:/var/www/html/shared
       # Keep vscode remote server in volume to avoid reinstalling
       - vscode:/home/www-data/
@@ -40,7 +40,7 @@ services:
       - HIDE_PHP_VERSION=true
 
 volumes:
-  webbase:
+  course.vuejs:
   vscode:
   db:
 
